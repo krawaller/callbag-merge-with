@@ -1,6 +1,6 @@
-let test = require('tape');
-
-let mergeWith = require('./index');
+const test = require('tape');
+const makeMockCallbag = require('callbag-mock');
+const mergeWith = require('./index');
 
 test('it merges the source with the other sources', t => {
   let history = [];
@@ -18,9 +18,9 @@ test('it merges the source with the other sources', t => {
   newSource2.emit(1, 'baz');
 
   t.deepEqual(history, [
-    ['sink', 'fromUp', 1, 'foo'],
-    ['sink', 'fromUp', 1, 'bar'],
-    ['sink', 'fromUp', 1, 'baz'],
+    ['sink', 'body', 1, 'foo'],
+    ['sink', 'body', 1, 'bar'],
+    ['sink', 'body', 1, 'baz'],
   ], 'sink gets data from all sources');
 
   t.end();
@@ -43,8 +43,8 @@ test('the merged source terminates once all contained sources terminate', t => {
   newSource2.emit(2, 'finalError');
 
   t.deepEqual(history, [
-    ['sink', 'fromUp', 1, 'data'],
-    ['sink', 'fromUp', 2, undefined],
+    ['sink', 'body', 1, 'data'],
+    ['sink', 'body', 2, undefined],
   ], 'sink is terminated after final source terminates');
 
   t.end();
@@ -64,30 +64,10 @@ test('a termination from sink ends all sources', t => {
   sink.emit(2);
 
   t.deepEqual(history, [
-    ['source', 'fromDown', 2, undefined],
-    ['newSource1', 'fromDown', 2, undefined],
-    ['newSource2', 'fromDown', 2, undefined],
+    ['source', 'talkback', 2, undefined],
+    ['newSource1', 'talkback', 2, undefined],
+    ['newSource2', 'talkback', 2, undefined],
   ], 'sources all get requests from sink');
 
   t.end();
 });
-
-function makeMockCallbag(name, report=()=>{}, isSource) {
-  if (report === true) {
-    isSource = true;
-    report = ()=>{};
-  }
-  let talkback;
-  let mock = (t, d) => {
-    report(name, 'fromUp', t, d);
-    if (t === 0){
-      talkback = d;
-      if (isSource) talkback(0, (st, sd) => report(name, 'fromDown', st, sd));
-    }
-  };
-  mock.emit = (t, d) => {
-    if (!talkback) throw new Error(`Can't emit from ${name} before anyone has connected`);
-    talkback(t, d);
-  };
-  return mock;
-}
