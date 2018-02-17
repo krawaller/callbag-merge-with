@@ -20,6 +20,6 @@
     "callbag-mock": "^1.0.0"
   },
   "dependencies": {
-    "callbag-merge": "^1.0.0"
+    "callbag-merge": "^1.1.0"
   }
 }
