@@ -1,6 +1,6 @@
 {
   "name": "callbag-merge-with",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Callbag operator version of merge",
   "repository": {
     "type": "git",
