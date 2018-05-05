@@ -1,6 +1,6 @@
 {
   "name": "callbag-merge-with",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Callbag operator version of merge",
   "repository": {
     "type": "git",
@@ -16,8 +16,8 @@
     "callbag"
   ],
   "devDependencies": {
-    "tape": "^4.8.0",
-    "callbag-mock": "^1.0.0"
+    "callbag-mock": "^2.2.0",
+    "tape": "^4.8.0"
   },
   "dependencies": {
     "callbag-merge": "^1.1.0"
