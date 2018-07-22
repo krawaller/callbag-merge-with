@@ -1,6 +1,6 @@
 const test = require('tape');
 const makeMockCallbag = require('callbag-mock');
-const mergeWith = require('./index');
+const mergeWith = require('.');
 
 test('it merges the source with the other sources', t => {
   const source = makeMockCallbag(true);

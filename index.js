@@ -1,5 +1,5 @@
-const merge = require("callbag-merge");
+import merge from "callbag-merge";
 
 const mergeWith = (...newSources) => current => merge(current, ...newSources);
 
-module.exports = mergeWith;
+export default mergeWith;
